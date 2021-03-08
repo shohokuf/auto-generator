@@ -1,0 +1,179 @@
+<#include "/macro.include"/>
+<#assign className = table.className>   
+<#assign classNameFirstLower = table.classNameFirstLower>   
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<#macro mapperEl value>${r"#{"}${value}}</#macro>
+<#macro namespace>${className}.</#macro>
+<mapper namespace="${basepackage}.dao.${className}Dao">
+
+	<resultMap id="RM_${className}" type="${basepackage}.entity.${className}">
+        <#list table.columns as column>
+        <result property="${column.columnNameLower}" column="${column.sqlName}"/>
+		</#list>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		<#list table.columns as column>${column.sqlName}<#if column_has_next>,</#if></#list>
+	    ]]>
+	</sql>
+
+	<!--保存 -->
+	<insert id="save">
+	    <![CDATA[
+	        INSERT INTO ${table.sqlName} (
+	        <#list table.columns as column>
+	        	${column.sqlName} <#if column_has_next>,</#if>
+	        </#list>
+	        ) VALUES (
+	        <#list table.columns as column>
+	        	<@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+	        </#list>        
+	        )
+	    ]]>
+	</insert>
+	
+	<!-- update 条件组合 -->
+	<sql id="update_sql">
+		<set>
+			<#list table.notPkColumns as column>
+			<#if column.isDateTimeColumn>
+			<if test="${column.columnNameFirstLower} != null">
+				${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+			</if>
+			</#if>
+			<#if column.isNumberColumn>
+			<if test="${column.columnNameFirstLower} != null">
+				${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+			</if>
+			</#if>
+			<#if column.isStringColumn>
+			<if test="${column.columnNameFirstLower} != null and ${column.columnNameFirstLower} != ''">
+				${column.sqlName} = <@mapperEl column.columnNameFirstLower/> <#if column_has_next>,</#if>
+			</if>
+			</#if>
+			</#list>
+		</set>
+	</sql>
+	
+	<!-- 修改 -->
+	<update id="update">
+		UPDATE ${table.sqlName}
+		<include refid="update_sql" />
+		WHERE
+		<#list table.compositeIdColumns as column>
+			${column.sqlName} = <@mapperEl column.columnNameLower/> <#if column_has_next> AND
+		</#if>
+		</#list>
+	</update>
+
+	<!-- 根据ID删除 -->
+	<delete id="delete">
+    	<![CDATA[
+        	DELETE FROM ${table.sqlName} 
+        	WHERE <#list table.compositeIdColumns as column> ${column.sqlName} = <@mapperEl column.columnNameLower/><#if column_has_next> AND </#if></#list>
+    	]]>
+	</delete>
+	
+	<!-- getById -->
+	<select id="getById" resultMap="RM_${className}">
+		SELECT
+		<include refid="columns" />
+		FROM ${table.sqlName}
+		WHERE <#list table.compositeIdColumns as column> ${column.sqlName} = <@mapperEl column.columnNameLower/> <#if column_has_next> AND </#if> </#list>
+	</select>
+
+	<!-- 获取总数 -->
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(1)
+		FROM ${table.sqlName}
+		<where>
+<#list table.columns as column>
+	<#if column.isDateTimeColumn>
+		<if test="${"model." + column.columnNameFirstLower} != null">
+			AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+		</if> 
+	<#else>
+	<#if column.isNumberColumn>
+		<if test="${"model." + column.columnNameFirstLower} != null">
+			AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+		</if>
+	</#if>
+	<#if column.isStringColumn>
+		<if test="${"model." + column.columnNameFirstLower} != null and ${"model." +column.columnNameFirstLower} !=''">
+			AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+		</if>
+	</#if>
+	</#if>
+</#list>
+		</where>
+	</select>  
+	
+	${r"<!-- 模糊查询： 字段名 LIKE '%${model.字段名}%' 如:  username like ''%${model.username}%'' -->"}
+	<!-- 按条件组合搜索列表  -->
+	<select id="findList" resultMap="RM_${className}">
+		SELECT
+		<include refid="columns" />
+		FROM  ${table.sqlName}
+		<where>
+<#list table.columns as column>
+	<#if column.isDateTimeColumn>
+		<if test="${column.columnNameFirstLower} != null">
+			AND ${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+		</if>
+	<#else>
+		<#if column.isNumberColumn>
+			<if test="${column.columnNameFirstLower} != null">
+				AND ${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+			</if>
+		</#if>
+		<#if column.isStringColumn>
+			<if test="${column.columnNameFirstLower} != null and ${column.columnNameFirstLower} !=''">
+				AND ${column.sqlName} = <@mapperEl column.columnNameFirstLower/>
+			</if>
+		</#if>
+	</#if>
+</#list>
+		</where>
+		<if test="sortColumns != null and sortColumns !=''">
+			ORDER BY <@jspEl 'sortColumns'/>
+		</if>
+	</select>
+
+	<!-- 分页 -->
+	<select id="findPageList" resultMap="RM_${className}">
+		SELECT TOP(${r"#{rows}"})
+		<include refid="columns" />
+		FROM (
+		SELECT row_number() OVER(ORDER BY <@jspEl "model." + 'sortColumns'/>) AS rownumber,*
+		FROM ${table.sqlName}
+		<where>
+	<#list table.columns as column>
+		<#if column.isDateTimeColumn>
+			<if test="${"model." + column.columnNameFirstLower} != null">
+				AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+			</if>
+		<#else>
+			<#if column.isNumberColumn>
+				<if test="${"model." + column.columnNameFirstLower} != null">
+					AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+				</if>
+			</#if>
+			<#if column.isStringColumn>
+				<if test="${"model." + column.columnNameFirstLower} != null and ${"model." +column.columnNameFirstLower} !=''">
+					AND ${column.sqlName} = <@mapperEl "model." + column.columnNameFirstLower/>
+				</if>
+			</#if>
+		</#if>
+	</#list>
+		</where>
+		) a
+		WHERE a.rownumber > ${r"#{offset}"}
+	</select>
+
+</mapper>
+	 
