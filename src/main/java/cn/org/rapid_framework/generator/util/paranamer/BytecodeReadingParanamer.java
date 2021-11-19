@@ -54,13 +54,13 @@ public class BytecodeReadingParanamer implements Paranamer {
 
     private static final Map<String, String> primitives = new HashMap<String, String>() {
         {
-            put("int","I");
-            put("boolean","Z");
-            put("char","C");
-            put("short","B");
-            put("float","F");
-            put("long","J");
-            put("double","D");
+            put("int", "I");
+            put("boolean", "Z");
+            put("char", "C");
+            put("short", "B");
+            put("float", "F");
+            put("long", "J");
+            put("double", "D");
         }
     };
 
@@ -199,7 +199,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                 if (primitives.containsKey(prefix)) {
                     s = "[" + primitives.get(prefix);
                 } else {
-                s = "[L" + prefix + ";";
+                    s = "[L" + prefix + ";";
                 }
             }
             return s;
@@ -231,11 +231,8 @@ public class BytecodeReadingParanamer implements Paranamer {
         private final int paramCount;
 
         private final int ignoreCount;
-
-        private int currentParameter;
-
         private final StringBuffer result;
-
+        private int currentParameter;
         private boolean debugInfoPresent;
 
         private MethodCollector(int ignoreCount, int paramCount) {
@@ -311,19 +308,58 @@ public class BytecodeReadingParanamer implements Paranamer {
     private static class ClassReader {
 
         /**
+         * The type of CONSTANT_Fieldref constant pool items.
+         */
+        final static int FIELD = 9;
+        /**
+         * The type of CONSTANT_Methodref constant pool items.
+         */
+        final static int METH = 10;
+        /**
+         * The type of CONSTANT_InterfaceMethodref constant pool items.
+         */
+        final static int IMETH = 11;
+        /**
+         * The type of CONSTANT_Integer constant pool items.
+         */
+        final static int INT = 3;
+        /**
+         * The type of CONSTANT_Float constant pool items.
+         */
+        final static int FLOAT = 4;
+        /**
+         * The type of CONSTANT_Long constant pool items.
+         */
+        final static int LONG = 5;
+        /**
+         * The type of CONSTANT_Double constant pool items.
+         */
+        final static int DOUBLE = 6;
+        /**
+         * The type of CONSTANT_NameAndType constant pool items.
+         */
+        final static int NAME_TYPE = 12;
+        /**
+         * The type of CONSTANT_Utf8 constant pool items.
+         */
+        final static int UTF8 = 1;
+        /**
          * The class to be parsed. <i>The content of this array must not be
          * modified. This field is intended for Attribute sub classes, and
          * is normally not needed by class generators or adapters.</i>
          */
         public final byte[] b;
-
+        /**
+         * Start index of the class header information (access, name...) in
+         * {@link #b b}.
+         */
+        public final int header;
         /**
          * The start index of each constant pool item in {@link #b b}, plus one.
          * The one byte offset skips the constant pool item tag that indicates its
          * type.
          */
         private final int[] items;
-
         /**
          * The String objects corresponding to the CONSTANT_Utf8 items. This cache
          * avoids multiple parsing of a given CONSTANT_Utf8 constant pool item,
@@ -333,64 +369,11 @@ public class BytecodeReadingParanamer implements Paranamer {
          * expensive to parse than CONSTANT_Utf8 items).
          */
         private final String[] strings;
-
         /**
          * Maximum length of the strings contained in the constant pool of the
          * class.
          */
         private final int maxStringLength;
-
-        /**
-         * Start index of the class header information (access, name...) in
-         * {@link #b b}.
-         */
-        public final int header;
-
-
-        /**
-         * The type of CONSTANT_Fieldref constant pool items.
-         */
-        final static int FIELD = 9;
-
-        /**
-         * The type of CONSTANT_Methodref constant pool items.
-         */
-        final static int METH = 10;
-
-        /**
-         * The type of CONSTANT_InterfaceMethodref constant pool items.
-         */
-        final static int IMETH = 11;
-
-        /**
-         * The type of CONSTANT_Integer constant pool items.
-         */
-        final static int INT = 3;
-
-        /**
-         * The type of CONSTANT_Float constant pool items.
-         */
-        final static int FLOAT = 4;
-
-        /**
-         * The type of CONSTANT_Long constant pool items.
-         */
-        final static int LONG = 5;
-
-        /**
-         * The type of CONSTANT_Double constant pool items.
-         */
-        final static int DOUBLE = 6;
-
-        /**
-         * The type of CONSTANT_NameAndType constant pool items.
-         */
-        final static int NAME_TYPE = 12;
-
-        /**
-         * The type of CONSTANT_Utf8 constant pool items.
-         */
-        final static int UTF8 = 1;
 
         // ------------------------------------------------------------------------
         // Constructors
@@ -442,8 +425,8 @@ public class BytecodeReadingParanamer implements Paranamer {
                             max = size;
                         }
                         break;
-                        // case HamConstants.CLASS:
-                        // case HamConstants.STR:
+                    // case HamConstants.CLASS:
+                    // case HamConstants.STR:
                     default:
                         size = 3;
                         break;
@@ -867,56 +850,56 @@ public class BytecodeReadingParanamer implements Paranamer {
         /**
          * The <tt>void</tt> type.
          */
-        private final static Type VOID_TYPE = new Type(VOID, null, ('V' << 24) 
-            | (5 << 16) | (0 << 8) | 0, 1);
+        private final static Type VOID_TYPE = new Type(VOID, null, ('V' << 24)
+                | (5 << 16) | (0 << 8) | 0, 1);
 
         /**
          * The <tt>boolean</tt> type.
          */
-        private final static Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24) 
-            | (0 << 16) | (5 << 8) | 1, 1);
+        private final static Type BOOLEAN_TYPE = new Type(BOOLEAN, null, ('Z' << 24)
+                | (0 << 16) | (5 << 8) | 1, 1);
 
         /**
          * The <tt>char</tt> type.
          */
-        private final static Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24) 
-            | (0 << 16) | (6 << 8) | 1, 1);
+        private final static Type CHAR_TYPE = new Type(CHAR, null, ('C' << 24)
+                | (0 << 16) | (6 << 8) | 1, 1);
 
         /**
          * The <tt>byte</tt> type.
          */
-        private final static Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24) 
-            | (0 << 16) | (5 << 8) | 1, 1);
+        private final static Type BYTE_TYPE = new Type(BYTE, null, ('B' << 24)
+                | (0 << 16) | (5 << 8) | 1, 1);
 
         /**
          * The <tt>short</tt> type.
          */
-        private final static Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24) 
-            | (0 << 16) | (7 << 8) | 1, 1);
+        private final static Type SHORT_TYPE = new Type(SHORT, null, ('S' << 24)
+                | (0 << 16) | (7 << 8) | 1, 1);
 
         /**
          * The <tt>int</tt> type.
          */
-        private final static Type INT_TYPE = new Type(INT, null, ('I' << 24) 
-            | (0 << 16) | (0 << 8) | 1, 1);
+        private final static Type INT_TYPE = new Type(INT, null, ('I' << 24)
+                | (0 << 16) | (0 << 8) | 1, 1);
 
         /**
          * The <tt>float</tt> type.
          */
-        private final static Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24) 
-            | (2 << 16) | (2 << 8) | 1, 1);
+        private final static Type FLOAT_TYPE = new Type(FLOAT, null, ('F' << 24)
+                | (2 << 16) | (2 << 8) | 1, 1);
 
         /**
          * The <tt>long</tt> type.
          */
-        private final static Type LONG_TYPE = new Type(LONG, null, ('J' << 24) 
-            | (1 << 16) | (1 << 8) | 2, 1);
+        private final static Type LONG_TYPE = new Type(LONG, null, ('J' << 24)
+                | (1 << 16) | (1 << 8) | 2, 1);
 
         /**
          * The <tt>double</tt> type.
          */
-        private final static Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24) 
-            | (3 << 16) | (3 << 8) | 2, 1);
+        private final static Type DOUBLE_TYPE = new Type(DOUBLE, null, ('D' << 24)
+                | (3 << 16) | (3 << 8) | 2, 1);
 
         // ------------------------------------------------------------------------
         // Fields
@@ -926,13 +909,15 @@ public class BytecodeReadingParanamer implements Paranamer {
          * The sort of this Java type.
          */
         private final int sort;
-
+        /**
+         * The length of the internal name of this Java type.
+         */
+        private final int len;
         /**
          * A buffer containing the internal name of this Java type. This field is
          * only used for reference types.
          */
         private char[] buf;
-
         /**
          * The offset of the internal name of this Java type in {@link #buf buf} or,
          * for primitive types, the size, descriptor and getOpcode offsets for this
@@ -940,11 +925,6 @@ public class BytecodeReadingParanamer implements Paranamer {
          * for IALOAD or IASTORE, byte 3 the offset for all other instructions).
          */
         private int off;
-
-        /**
-         * The length of the internal name of this Java type.
-         */
-        private final int len;
 
         // ------------------------------------------------------------------------
         // Constructors
@@ -982,7 +962,7 @@ public class BytecodeReadingParanamer implements Paranamer {
          *
          * @param methodDescriptor a method descriptor.
          * @return the Java types corresponding to the argument types of the given
-         *         method descriptor.
+         * method descriptor.
          */
         private static Type[] getArgumentTypes(final String methodDescriptor) {
             char[] buf = methodDescriptor.toCharArray();
@@ -1053,7 +1033,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                         }
                     }
                     return new Type(ARRAY, buf, off, len + 1);
-                    // case 'L':
+                // case 'L':
                 default:
                     len = 1;
                     while (buf[off + len] != ';') {
@@ -1122,7 +1102,7 @@ public class BytecodeReadingParanamer implements Paranamer {
                         b.append("[]");
                     }
                     return b.toString();
-                    // case OBJECT:
+                // case OBJECT:
                 default:
                     return new String(buf, off, len).replace('/', '.');
             }

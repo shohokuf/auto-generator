@@ -28,11 +28,15 @@
 	<entry key="java_typemapping.java.sql.Clob">String</entry>
 	
 	<!-- Mysql -->
-    <!-- 	<entry key="jdbc_url">jdbc:mysql://localhost:3306/prevelige?useUnicode=true&amp;characterEncoding=UTF-8</entry>
-	<entry key="jdbc_driver">com.mysql.jdbc.Driver</entry> -->
+    <!--<entry key="jdbc.url">jdbc:mysql://10.10.80.200:3306/eoms_tyyw?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;
+		allowPublicKeyRetrieval=true</entry>
+	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>-->
 
 	<!-- Oracle	-->
+	<entry key="jdbc.url">jdbc:oracle:thin:@//10.10.80.200:1521/pdb_eomsgs</entry>
+<!--
 	<entry key="jdbc.url">jdbc:oracle:thin:@//168.1.26.10:1521/pdb_partnerhn</entry>
+-->
 	<entry key="jdbc.driver">oracle.jdbc.driver.OracleDriver</entry>
 
 	<!-- SQLServer2000 
@@ -41,7 +45,13 @@
 	-->
 
 	<!-- 数据库用户名密码 -->
-	<entry key="jdbc.username">partner</entry>
-	<entry key="jdbc.password">tongtech_10</entry>
+	<!--<entry key="jdbc.username">partner</entry>
+	<entry key="jdbc.password">tongtech_10</entry>-->
+	<entry key="jdbc.username">eoms_tyyw</entry>
+	<entry key="jdbc.password">tongtech_200</entry>
+<!--
+	<entry key="jdbc.username">oss</entry>
+	<entry key="jdbc.password">oss123</entry>
+-->
 
 </properties>

@@ -30,11 +30,7 @@
 
 package cn.org.rapid_framework.generator.util.paranamer;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.*;
 
 /**
  * Default implementation of Paranamer reads from a post-compile added field called '__PARANAMER_DATA'
@@ -45,52 +41,14 @@ import java.lang.reflect.AccessibleObject;
  */
 public class DefaultParanamer implements Paranamer {
 
+    public static final String __PARANAMER_DATA = "v1.0 \n"
+            + "lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
+            + "lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n"
+            + "getParameterTypeName java.lang.Class cls\n";
     private static final String COMMA = ",";
     private static final String SPACE = " ";
 
-    public static final String __PARANAMER_DATA = "v1.0 \n"
-        + "lookupParameterNames java.lang.AccessibleObject methodOrConstructor \n"
-        + "lookupParameterNames java.lang.AccessibleObject,boolean methodOrCtor,throwExceptionIfMissing \n"
-        + "getParameterTypeName java.lang.Class cls\n";
-
     public DefaultParanamer() {
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
-        return lookupParameterNames(methodOrConstructor, true);
-    }
-
-    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
-        // Oh for some commonality between Constructor and Method !!
-        Class<?>[] types = null;
-        Class<?> declaringClass = null;
-        String name = null;
-        if (methodOrCtor instanceof Method) {
-            Method method = (Method) methodOrCtor;
-            types = method.getParameterTypes();
-            name = method.getName();
-            declaringClass = method.getDeclaringClass();
-        } else {
-            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
-            types = constructor.getParameterTypes();
-            declaringClass = constructor.getDeclaringClass();
-            name = "<init>";
-        }
-
-        if (types.length == 0) {
-            return EMPTY_NAMES;
-        }
-        final String parameterTypeNames = getParameterTypeNamesCSV(types);
-        final String[] names = getParameterNames(declaringClass, parameterTypeNames, name + SPACE);
-        if ( names == null ){
-            if (throwExceptionIfMissing) {
-            throw new ParameterNamesNotFoundException("No parameter names found for class '"+declaringClass+"', methodOrCtor " + name
-                    +" and parameter types "+parameterTypeNames);
-            } else {
-                return Paranamer.EMPTY_NAMES;
-            }
-        }
-        return names;
     }
 
     private static String[] getParameterNames(Class<?> declaringClass, String parameterTypes, String prefix) {
@@ -124,7 +82,7 @@ public class DefaultParanamer implements Paranamer {
             // TODO create acc test what to do with private? access anyway?
             // TODO create acc test with non static field?
             // TODO create acc test with another type of field?
-            if(!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
+            if (!Modifier.isStatic(field.getModifiers()) || !field.getType().equals(String.class)) {
                 return null;
             }
             return (String) field.get(null);
@@ -137,7 +95,8 @@ public class DefaultParanamer implements Paranamer {
 
     /**
      * Filter the mappings and only return lines matching the prefix passed in.
-     * @param data the data encoding the mappings
+     *
+     * @param data   the data encoding the mappings
      * @param prefix the String prefix
      * @return A list of lines that match the prefix
      */
@@ -148,28 +107,64 @@ public class DefaultParanamer implements Paranamer {
         int ix = data.indexOf(prefix);
         if (ix >= 0) {
             int iy = data.indexOf("\n", ix);
-            if(iy >0) {
-                return data.substring(ix,iy);
+            if (iy > 0) {
+                return data.substring(ix, iy);
             }
         }
         return "";
     }
 
-
-    private static String getParameterTypeName(Class<?> cls){
+    private static String getParameterTypeName(Class<?> cls) {
         String parameterTypeNameName = cls.getName();
         int arrayNestingDepth = 0;
         int ix = parameterTypeNameName.indexOf("[");
-        while (ix>-1){
+        while (ix > -1) {
             arrayNestingDepth++;
-            parameterTypeNameName=parameterTypeNameName.replaceFirst("(\\[\\w)|(\\[)","");
+            parameterTypeNameName = parameterTypeNameName.replaceFirst("(\\[\\w)|(\\[)", "");
             ix = parameterTypeNameName.indexOf("[");
         }
-        parameterTypeNameName =parameterTypeNameName.replaceFirst(";","");
-        for (int k=0;k<arrayNestingDepth;k++){
-            parameterTypeNameName = parameterTypeNameName+"[]";
+        parameterTypeNameName = parameterTypeNameName.replaceFirst(";", "");
+        for (int k = 0; k < arrayNestingDepth; k++) {
+            parameterTypeNameName = parameterTypeNameName + "[]";
         }
-        return    parameterTypeNameName;
+        return parameterTypeNameName;
 
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrConstructor) {
+        return lookupParameterNames(methodOrConstructor, true);
+    }
+
+    public String[] lookupParameterNames(AccessibleObject methodOrCtor, boolean throwExceptionIfMissing) {
+        // Oh for some commonality between Constructor and Method !!
+        Class<?>[] types = null;
+        Class<?> declaringClass = null;
+        String name = null;
+        if (methodOrCtor instanceof Method) {
+            Method method = (Method) methodOrCtor;
+            types = method.getParameterTypes();
+            name = method.getName();
+            declaringClass = method.getDeclaringClass();
+        } else {
+            Constructor<?> constructor = (Constructor<?>) methodOrCtor;
+            types = constructor.getParameterTypes();
+            declaringClass = constructor.getDeclaringClass();
+            name = "<init>";
+        }
+
+        if (types.length == 0) {
+            return EMPTY_NAMES;
+        }
+        final String parameterTypeNames = getParameterTypeNamesCSV(types);
+        final String[] names = getParameterNames(declaringClass, parameterTypeNames, name + SPACE);
+        if (names == null) {
+            if (throwExceptionIfMissing) {
+                throw new ParameterNamesNotFoundException("No parameter names found for class '" + declaringClass + "', methodOrCtor " + name
+                        + " and parameter types " + parameterTypeNames);
+            } else {
+                return Paranamer.EMPTY_NAMES;
+            }
+        }
+        return names;
     }
 }
