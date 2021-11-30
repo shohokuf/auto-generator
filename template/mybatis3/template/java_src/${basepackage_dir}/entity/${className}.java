@@ -11,8 +11,8 @@ public class ${className} extends BaseEntity {
 	<#list table.columns as column>
 
 	/**
-     * @备注:${column.remarks}     
-     * @字段:${column.sqlName} ${column.sqlTypeName}(${column.size})  
+     * ${column.remarks}
+     * ${column.sqlName} ${column.sqlTypeName}(${column.size})
      */	
 	private ${column.javaType} ${column.columnNameLower};
 	<#if column.isDateTimeColumn>
