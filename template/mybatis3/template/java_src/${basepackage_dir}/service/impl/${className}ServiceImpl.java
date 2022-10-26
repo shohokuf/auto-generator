@@ -11,6 +11,6 @@ import ${basepackage}.entity.${className};
  * 否则自行声明接口，实现方法
  */
 @Service
-public class $ {className}ServiceImpl extends MybatisBaseServiceImpl<${className}, ${table.idColumn.javaType}> implements ${className}Service {
+public class ${className}ServiceImpl extends MybatisBaseServiceImpl<${className}, ${table.idColumn.javaType}> implements ${className}Service {
 
 }

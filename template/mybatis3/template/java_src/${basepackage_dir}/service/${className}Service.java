@@ -8,6 +8,6 @@ import ${basepackage}.entity.${className};
 /**
  * ${className}Service接口
  */
-public interface $ {className}Service extends BaseService<${className}, ${table.idColumn.javaType}> {
+public interface ${className}Service extends BaseService<${className}, ${table.idColumn.javaType}> {
 
 }
