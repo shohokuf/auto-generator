@@ -1,6 +1,6 @@
 <#assign className=table.className>
-        <#assign classNameLower=className?uncap_first>
-        package ${basepackage}.service.impl;
+<#assign classNameLower=className?uncap_first>
+package ${basepackage}.service.impl;
 
 import ${basepackage}.service.${className}Service;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,6 @@ import ${basepackage}.entity.${className};
  * 否则自行声明接口，实现方法
  */
 @Service
-public class $ {
-    className
-}ServiceImpl extends MybatisBaseServiceImpl<${className},${table.idColumn.javaType}>implements ${className}Service{
+public class $ {className}ServiceImpl extends MybatisBaseServiceImpl<${className}, ${table.idColumn.javaType}> implements ${className}Service {
 
-        }
+}

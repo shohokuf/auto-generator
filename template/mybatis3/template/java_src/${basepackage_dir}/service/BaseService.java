@@ -1,6 +1,4 @@
-package $
-
-{basepackage}.service;
+package ${basepackage}.service;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,6 +1,4 @@
-package $
-
-{basepackage}.dto;
+package ${basepackage}.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;

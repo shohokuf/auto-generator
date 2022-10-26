@@ -1,13 +1,9 @@
-package $
-
-{basepackage}.model;
+package ${basepackage}.model;
 
 import java.io.Serializable;
 
 /**
  * model基类
- *
- * @version : Ver 1.0
  */
 public class BaseModel implements Serializable {
 

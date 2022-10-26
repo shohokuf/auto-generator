@@ -1,6 +1,4 @@
-package $
-
-{basepackage}.dao;
+package ${basepackage}.dao;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,12 +1,4 @@
-/*
- * Beijing YESWAY Information Technology Co,Ltd.
- * All rights reserved.
- * 北京九五智驾信息技术股份有限公司
- * <p>Pager.java</p>
- */
-package $
-
-{basepackage}.dto;
+package ${basepackage}.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,9 +6,6 @@ import java.util.List;
 
 /**
  * 分页实体dto
- *
- * @version : Ver 1.0
- * @date : 2015-5-28 下午1:13:25
  */
 public class Pager implements Serializable {
 

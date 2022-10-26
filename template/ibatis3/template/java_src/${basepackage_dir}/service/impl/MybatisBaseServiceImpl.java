@@ -1,12 +1,4 @@
-/*
- * Beijing YESWAY Information Technology Co,Ltd.
- * All rights reserved.
- * 北京九五智驾信息技术股份有限公司
- * <p>MybatisBaseServiceImpl.java</p>
- */
-package $
-
-{basepackage}.service.impl;
+package ${basepackage}.service.impl;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -22,8 +14,6 @@ import ${basepackage}.service.BaseService;
 
 /**
  * service基础实现类
- *
- * @version : Ver 1.0
  */
 
 @Service

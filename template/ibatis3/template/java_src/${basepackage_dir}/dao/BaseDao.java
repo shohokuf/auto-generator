@@ -1,12 +1,4 @@
-/*
- * Beijing YESWAY Information Technology Co,Ltd.
- * All rights reserved.
- * 北京九五智驾信息技术股份有限公司
- * <p>MybatisBaseDao.java</p>
- */
-package $
-
-{basepackage}.dao;
+package ${basepackage}.dao;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,9 +6,6 @@ import java.util.Map;
 
 /**
  * mybatis基础Dao
- *
- * @version : Ver 1.0
- * @date    : 2015-5-28 下午1:04:46
  */
 public interface BaseDao<T, PK extends Serializable> {
 

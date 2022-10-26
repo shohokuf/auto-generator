@@ -1,6 +1,4 @@
-package $
-
-{basepackage}.service.impl;
+package ${basepackage}.service.impl;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -17,7 +15,6 @@ import ${basepackage}.service.BaseService;
 /**
  * service基础实现类
  */
-
 @Service
 public class MybatisBaseServiceImpl<T, PK extends Serializable> implements BaseService<T, PK> {
 

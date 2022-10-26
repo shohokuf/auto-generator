@@ -1,12 +1,4 @@
-/*
- * Beijing YESWAY Information Technology Co,Ltd.
- * All rights reserved.
- * 北京九五智驾信息技术股份有限公司
- * <p>Pager.java</p>
- */
-package $
-
-{basepackage}.service;
+package ${basepackage}.service;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,8 +7,6 @@ import ${basepackage}.dto.Pager;
 
 /**
  * service基础类
- *
- * @version : Ver 1.0
  */
 public interface BaseService<T, PK extends Serializable> {
 
