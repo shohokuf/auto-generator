@@ -11,13 +11,10 @@ import java.util.Scanner;
 
 /**
  * 命令行工具类,可以直接运行
- *
- * @author badqiu
  */
 public class CommandLine {
 
     public static void main(String[] args) throws Exception {
-        //disable freemarker logging
         freemarker.log.Logger.selectLoggerLibrary(freemarker.log.Logger.LIBRARY_NONE);
 
         startProcess();

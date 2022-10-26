@@ -1,4 +1,6 @@
-package ${basepackage}.service.impl;
+package $
+
+{basepackage}.service.impl;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,81 +21,81 @@ import ${basepackage}.service.BaseService;
 @Service
 public class MybatisBaseServiceImpl<T, PK extends Serializable> implements BaseService<T, PK> {
 
-	@Autowired
-	private BaseDao<T, PK> baseDao;
+    @Autowired
+    private BaseDao<T, PK> baseDao;
 
-	@Override
-	public T getById(PK pk) {
-		return baseDao.getById(pk);
-	}
+    @Override
+    public T getById(PK pk) {
+        return baseDao.getById(pk);
+    }
 
-	@Override
-	public int getTotalCount(T obj) {
-		if(null == obj){
-			throw new NullPointerException("entity bean is null");
-		}
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("model", obj);
+    @Override
+    public int getTotalCount(T obj) {
+        if (null == obj) {
+            throw new NullPointerException("entity bean is null");
+        }
 
-		return baseDao.getTotalCount(params);
-	}
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("model", obj);
 
-	@Override
-	public List<T> findList(T obj) {
-		if(null == obj){
-			throw new NullPointerException("entity bean is null");
-		}
-		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("model", obj);
+        return baseDao.getTotalCount(params);
+    }
 
-		return baseDao.findList(obj);
-	}
+    @Override
+    public List<T> findList(T obj) {
+        if (null == obj) {
+            throw new NullPointerException("entity bean is null");
+        }
 
-	@Override
-	public Pager findPageList(T obj, Integer pageNumber, Integer pageSize) {
-		int total = getTotalCount(obj);
-		pageSize = pageSize == null || pageSize <= 0 ? 10 : pageSize;
-		int totalPage = (total + pageSize - 1) / pageSize;
-		pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber > totalPage ? totalPage : pageNumber;
-		Pager pager = new Pager(pageNumber, pageSize, total);
-		if (total > 0) {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("offset", (pager.getPageNumber() - 1) * pageSize);
-			params.put("rows", pageSize);
-			params.put("model", obj);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("model", obj);
 
-			List<T> list = baseDao.findPageList(params);
+        return baseDao.findList(obj);
+    }
 
-			pager.setDatas(list); // 数据库集合
-		}
+    @Override
+    public Pager findPageList(T obj, Integer pageNumber, Integer pageSize) {
+        int total = getTotalCount(obj);
+        pageSize = pageSize == null || pageSize <= 0 ? 10 : pageSize;
+        int totalPage = (total + pageSize - 1) / pageSize;
+        pageNumber = pageNumber == null || pageNumber < 1 ? 1 : pageNumber > totalPage ? totalPage : pageNumber;
+        Pager pager = new Pager(pageNumber, pageSize, total);
+        if (total > 0) {
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("offset", (pager.getPageNumber() - 1) * pageSize);
+            params.put("rows", pageSize);
+            params.put("model", obj);
 
-		return pager;
-	}
+            List<T> list = baseDao.findPageList(params);
 
-	@Override
-	public int save(T obj) {
-		if(null == obj){
-			throw new NullPointerException("entity bean is null");
-		}
-		
-		return baseDao.save(obj);
-	}
+            pager.setDatas(list); // 数据库集合
+        }
 
-	@Override
-	public int update(T obj) {
-		if(null == obj){
-			throw new NullPointerException("entity bean is null");
-		}
-		
-		return baseDao.update(obj);
-	}
+        return pager;
+    }
 
-	@Override
-	public int delete(PK pk) {
+    @Override
+    public int save(T obj) {
+        if (null == obj) {
+            throw new NullPointerException("entity bean is null");
+        }
 
-		return baseDao.delete(pk);
-	}
+        return baseDao.save(obj);
+    }
+
+    @Override
+    public int update(T obj) {
+        if (null == obj) {
+            throw new NullPointerException("entity bean is null");
+        }
+
+        return baseDao.update(obj);
+    }
+
+    @Override
+    public int delete(PK pk) {
+
+        return baseDao.delete(pk);
+    }
 
 }

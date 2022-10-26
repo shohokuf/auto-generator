@@ -1,57 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
-	<comment>
-		代码生成器配置文件: 
-		1.会为所有的property生成property_dir属性,如pkg=com.company => pkg_dir=com/company
-		2.可以引用环境变量: ${env.JAVA_HOME} or System.properties: ${user.home},property之间也可以相互引用
-	</comment>
-	
-	<entry key="basepackage">com.test</entry>
-	<entry key="outRoot">/Users/sunchuanfu</entry><!-- 修改输出根目录 -->
-	<entry key="templateRoot">/Users/sunchuanfu/IdeaProjects/auto-generator/template</entry> <!-- 修改template地址 -->
-	
-	<!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
-	<entry key="tableRemovePrefixes"></entry>
-	
-	<!-- oracle需要指定jdbc.schema,并且可能要大写，其它数据库忽略此项配置  -->
-	<entry key="jdbc.schema"></entry>
-	<entry key="jdbc.catalog"></entry>
-	
-	<!-- 数据库类型至java类型映射  -->
-	<entry key="java_typemapping.java.sql.Timestamp">java.util.Date</entry>
-	<entry key="java_typemapping.java.sql.Date">java.util.Date</entry>
-	<entry key="java_typemapping.java.sql.Time">java.util.Date</entry>	
-	<entry key="java_typemapping.java.lang.Byte">Integer</entry>
-	<entry key="java_typemapping.java.lang.Short">Integer</entry>
-	<entry key="java_typemapping.java.math.BigDecimal">BigDecimal</entry>
-	<entry key="java_typemapping.java.sql.Clob">String</entry>
-	
-	<!-- Mysql -->
-    <!--<entry key="jdbc.url">jdbc:mysql://10.10.80.200:3306/eoms_tyyw?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;
+    <comment>
+        代码生成器配置文件:
+        1.会为所有的property生成property_dir属性,如pkg=com.company => pkg_dir=com/company
+        2.可以引用环境变量: ${env.JAVA_HOME} or System.properties: ${user.home},property之间也可以相互引用
+    </comment>
+
+    <entry key="basepackage">com.test</entry>
+    <entry key="outRoot">/Users/sunchuanfu</entry><!-- 修改输出根目录 -->
+    <entry key="templateRoot">/Users/sunchuanfu/IdeaProjects/auto-generator/template</entry> <!-- 修改template地址 -->
+
+    <!-- 需要移除的表名前缀,使用逗号进行分隔多个前缀,示例值: t_,v_ -->
+    <entry key="tableRemovePrefixes"></entry>
+
+    <!-- oracle需要指定jdbc.schema,并且可能要大写，其它数据库忽略此项配置  -->
+    <entry key="jdbc.schema"></entry>
+    <entry key="jdbc.catalog"></entry>
+
+    <!-- 数据库类型至java类型映射  -->
+    <entry key="java_typemapping.java.sql.Timestamp">LocalDateTime</entry>
+    <entry key="java_typemapping.java.sql.Date">LocalDateTime</entry>
+    <entry key="java_typemapping.java.sql.Time">LocalDateTime</entry>
+    <entry key="java_typemapping.java.lang.Byte">Integer</entry>
+    <entry key="java_typemapping.java.lang.Short">Integer</entry>
+    <entry key="java_typemapping.java.math.BigDecimal">BigDecimal</entry>
+    <entry key="java_typemapping.java.sql.Clob">String</entry>
+
+    <!-- Mysql -->
+    <!--<entry key="jdbc.url">jdbc:mysql://10.10.80.201:3306/hl_eoms?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;
 		allowPublicKeyRetrieval=true</entry>
 	<entry key="jdbc.driver">com.mysql.jdbc.Driver</entry>-->
 
-	<!-- Oracle	-->
-	<entry key="jdbc.url">jdbc:oracle:thin:@//10.10.80.200:1521/pdb_eomsgs</entry>
-<!--
-	<entry key="jdbc.url">jdbc:oracle:thin:@//168.1.26.10:1521/pdb_partnerhn</entry>
--->
-	<entry key="jdbc.driver">oracle.jdbc.driver.OracleDriver</entry>
+    <!-- Oracle	-->
+    <!--<entry key="jdbc.url">jdbc:oracle:thin:@//10.10.91.10:1521/pdb_eomssx</entry>-->
+    <!-- 河南移动 -->
+    <entry key="jdbc.url">jdbc:oracle:thin:@//10.10.80.201:1521/pdb_partnerhn201</entry>
+    <!--<entry key="jdbc.url">jdbc:oracle:thin:@//10.10.80.200:1521/pdb_eomsgs</entry>-->
+    <entry key="jdbc.driver">oracle.jdbc.driver.OracleDriver</entry>
 
-	<!-- SQLServer2000 
-	<entry key="jdbc.url">jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]</entry>
-	<entry key="jdbc.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</entry>
-	-->
+    <!-- SQLServer2000
+    <entry key="jdbc.url">jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=[database]</entry>
+    <entry key="jdbc.driver">com.microsoft.jdbc.sqlserver.SQLServerDriver</entry>
+    -->
 
-	<!-- 数据库用户名密码 -->
-	<!--<entry key="jdbc.username">partner</entry>
-	<entry key="jdbc.password">tongtech_10</entry>-->
-	<entry key="jdbc.username">eoms_tyyw</entry>
-	<entry key="jdbc.password">tongtech_200</entry>
-<!--
-	<entry key="jdbc.username">oss</entry>
-	<entry key="jdbc.password">oss123</entry>
--->
+    <!-- 数据库用户名密码 -->
+    <!--<entry key="jdbc.username">eoms_sx</entry>
+    <entry key="jdbc.password">tongtech#10</entry>-->
+    <!-- 河南移动 -->
+    <entry key="jdbc.username">partner</entry>
+    <entry key="jdbc.password">tongtech_201</entry>
+    <!--<entry key="jdbc.username">eoms_tyyw</entry>
+    <entry key="jdbc.password">tongtech_200</entry>-->
+    <!--<entry key="jdbc.username">oss</entry>
+    <entry key="jdbc.password">oss123</entry>-->
+    <!--<entry key="jdbc.username">mysql</entry>
+    <entry key="jdbc.password">mysql123</entry>-->
 
 </properties>

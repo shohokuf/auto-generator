@@ -20,6 +20,7 @@ public class ResultSetMetaDataHolder {
 
     public ResultSetMetaDataHolder() {
     }
+
     public ResultSetMetaDataHolder(ResultSetMetaData m, int i) throws SQLException {
         String catalogName = m.getCatalogName(i);
         String columnClassName = m.getColumnClassName(i);

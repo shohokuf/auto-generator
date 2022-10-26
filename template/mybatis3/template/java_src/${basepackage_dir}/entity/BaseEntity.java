@@ -1,4 +1,6 @@
-package ${basepackage}.entity;
+package $
+
+{basepackage}.entity;
 
 import java.io.Serializable;
 
@@ -7,17 +9,19 @@ import java.io.Serializable;
  */
 public class BaseEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/** 排序字段 */
-	private String sortColumns;
+    /**
+     * 排序字段
+     */
+    private String sortColumns;
 
-	public String getSortColumns() {
-		return sortColumns;
-	}
+    public String getSortColumns() {
+        return sortColumns;
+    }
 
-	public void setSortColumns(String sortColumns) {
-		this.sortColumns = sortColumns;
-	}
+    public void setSortColumns(String sortColumns) {
+        this.sortColumns = sortColumns;
+    }
 
 }
