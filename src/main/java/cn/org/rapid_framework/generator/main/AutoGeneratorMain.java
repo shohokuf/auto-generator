@@ -16,7 +16,8 @@ public class AutoGeneratorMain {
     // 运行main()自动生成 dao、service、model、mapper.xml
     public static void main(String[] args) throws Exception {
         // 生成数组中所有表名对应的代码
-        String[] tableNames = new String[]{"cmn_incomet_contract_t"};
+        String[] tableNames = new String[]{"con_incomet_contract_attach_t", "cmn_payout_contract_t",
+                "con_incomet_contract_main_t", "con_incomet_contract_link_t"};
         generateByTable(tableNames);
         // 打开文件夹
         // Runtime.getRuntime().exec("cmd.exe /c start "+ GeneratorProperties.getRequiredProperty("outRoot"));

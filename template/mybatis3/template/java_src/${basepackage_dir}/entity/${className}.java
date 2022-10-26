@@ -2,6 +2,14 @@
 <#assign className = table.className>
 <#assign classNameLower = className?uncap_first>
 
+import lombok.Data;
+
+/**
+ *
+ */
+@Data
+@Entity
+@Table(name = "")
 public class ${className} {
     <#list table.columns as column>
 
